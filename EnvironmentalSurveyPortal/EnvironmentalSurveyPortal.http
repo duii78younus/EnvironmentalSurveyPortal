@@ -1,0 +1,6 @@
+@EnvironmentalSurveyPortal_HostAddress = http://localhost:5079
+
+GET {{EnvironmentalSurveyPortal_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
