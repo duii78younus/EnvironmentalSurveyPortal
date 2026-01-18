@@ -41,6 +41,8 @@ using (var scope = app.Services.CreateScope())
             await roleManager.CreateAsync(new IdentityRole(role));
         }
     }
+
+
 }
 
 // 6️⃣ Middleware pipeline
