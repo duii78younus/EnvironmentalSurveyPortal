@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1️⃣ Add Database Context (SQL Server)
+// ================= DATABASE =================
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2️⃣ Add Identity for authentication
+// ================= IDENTITY =================
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -20,20 +21,22 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// 3️⃣ Add MVC with views
+// ================= MVC =================
 builder.Services.AddControllersWithViews();
 
-// 4️⃣ Swagger (optional)
+// ================= SWAGGER (SAFE MODE) =================
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// 5️⃣ Seed roles (Admin, Student, Faculty)
+// ================= ROLE SEEDING =================
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
     string[] roles = { "Admin", "Student", "Faculty" };
+
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
@@ -41,11 +44,9 @@ using (var scope = app.Services.CreateScope())
             await roleManager.CreateAsync(new IdentityRole(role));
         }
     }
-
-
 }
 
-// 6️⃣ Middleware pipeline
+// ================= MIDDLEWARE =================
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -57,13 +58,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();  // ✅ Must be before Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
-// 7️⃣ Default route
+// ================= ROUTING =================
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();
-

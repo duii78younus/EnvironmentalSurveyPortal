@@ -4,11 +4,11 @@
     {
         public int Id { get; set; }
         public int SurveyId { get; set; }
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
 
-        public string Answer { get; set; }
+        public string Answer { get; set; } = string.Empty;
 
-        public Survey Survey { get; set; }
-        public ApplicationUser User { get; set; }
+        public Survey Survey { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
     }
 }
