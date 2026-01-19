@@ -12,6 +12,9 @@ namespace EnvironmentalSurveyPortal.Data
         }
 
         public DbSet<Survey> Surveys { get; set; }
+
         public DbSet<SurveyResponse> SurveyResponses { get; set; }
+
+        public DbSet<Support> Support { get; set; }
     }
 }
